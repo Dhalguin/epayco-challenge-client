@@ -1,13 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import RechargeWalletModal from '../../modals/rechargeModal'
 import PaymentModal from '../../modals/paymentModal'
 import ConfirmPaymentModal from '../../modals/confirmPaymentModal'
+import { api } from '../../api'
+import { Client } from '../../api/types'
 
 function HomePage() {
   const [visibleModal, setVisibleModal] = useState({ recharge: false, payment: false, confirm: false })
   const [rechargeWalletAmount, setRechargeWalletAmount] = useState<number>(0)
   const [paymentAmount, setPaymentAmount] = useState<number>(0)
   const [token, setToken] = useState<number>(0)
+  const [availableBalance, setAvailableBalance] = useState(0)
 
   const openModal = (modal: 'recharge' | 'payment' | 'confirm') => {
     switch (modal) {
@@ -68,6 +71,18 @@ function HomePage() {
     closeModal()
   }
 
+  const balance = async () => {
+    const response = await api.checkBalance<Client>(87654321, '87654321')
+    console.log({ response })
+    if (response?.status === 200) {
+      setAvailableBalance(response.data.valor)
+    }
+  }
+
+  useEffect(() => {
+    balance()
+  }, [])
+
   return (
     <>
       <div className="container">
@@ -79,7 +94,7 @@ function HomePage() {
             <div className="mt-2">
               <div className="bg-blue-900 text-white rounded-xl p-3 min-h-[125px]">
                 <span className="text-gray-200">Saldo disponible</span>
-                <h2 className="text-3xl font-semibold mt-2">$ 500.00</h2>
+                <h2 className="text-3xl font-semibold mt-2">$ {availableBalance}</h2>
               </div>
             </div>
           </div>
