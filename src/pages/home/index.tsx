@@ -1,11 +1,15 @@
 import { useState } from 'react'
 import RechargeWalletModal from '../../modals/rechargeModal'
+import PaymentModal from '../../modals/paymentModal'
+import ConfirmPaymentModal from '../../modals/confirmPaymentModal'
 
 function HomePage() {
-  const [visibleModal, setVisibleModal] = useState({ recharge: false, payment: false })
-  const [rechargeWalletAmount, setRechargeWalletAmount] = useState(0.0)
+  const [visibleModal, setVisibleModal] = useState({ recharge: false, payment: false, confirm: false })
+  const [rechargeWalletAmount, setRechargeWalletAmount] = useState<number>(0)
+  const [paymentAmount, setPaymentAmount] = useState<number>(0)
+  const [token, setToken] = useState<number>(0)
 
-  const openModal = (modal: 'recharge' | 'payment') => {
+  const openModal = (modal: 'recharge' | 'payment' | 'confirm') => {
     switch (modal) {
       case 'recharge':
         setVisibleModal(prevState => ({ ...prevState, recharge: true }))
@@ -15,13 +19,17 @@ function HomePage() {
         setVisibleModal(prevState => ({ ...prevState, payment: true }))
         break
 
+      case 'confirm':
+        setVisibleModal(prevState => ({ ...prevState, confirm: true }))
+        break
+
       default:
         break
     }
   }
 
   const closeModal = () => {
-    setVisibleModal(prevState => ({ ...prevState, recharge: false, payment: false }))
+    setVisibleModal(prevState => ({ ...prevState, recharge: false, payment: false, confirm: false }))
   }
 
   const rechargeWallet = () => {
@@ -29,6 +37,30 @@ function HomePage() {
       documento: '',
       celular: '',
       valor: rechargeWalletAmount,
+    }
+
+    // Call API
+    console.log({ payload })
+    closeModal()
+  }
+
+  const payment = () => {
+    const payload = {
+      documento: '',
+      celular: '',
+    }
+
+    // Call API
+    console.log({ payload })
+    openModal('confirm')
+  }
+
+  const confirmPayment = () => {
+    const payload = {
+      clientId: '',
+      token: token,
+      sessionId: '',
+      monto: paymentAmount,
     }
 
     // Call API
@@ -63,12 +95,31 @@ function HomePage() {
       </div>
 
       {/* Modals */}
+      {/* Recharge Wallet Modal */}
       <RechargeWalletModal
         visible={visibleModal.recharge}
         title="Recargar billetera"
         onClose={() => closeModal()}
         setRechargeWalletAmount={setRechargeWalletAmount}
         onRecharge={rechargeWallet}
+      />
+
+      {/* Payment Modal */}
+      <PaymentModal
+        visible={visibleModal.payment}
+        title="Pagar"
+        onClose={() => closeModal()}
+        setPaymentAmount={setPaymentAmount}
+        onPayment={payment}
+      />
+
+      {/* Confirm Payment Modal */}
+      <ConfirmPaymentModal
+        visible={visibleModal.confirm}
+        title="Confirmar"
+        onClose={() => closeModal()}
+        setToken={setToken}
+        onConfirmPayment={confirmPayment}
       />
     </>
   )
