@@ -12,9 +12,21 @@ export type Client = {
   valor: number
 }
 
+export type Token = {
+  sessionId: string
+  token: number
+}
+
+// Payloads
+
 export type RegisterClientPayload = {
   documento: string
   nombres: string
   email: string
+  celular: string
+}
+
+export type PaymentPayload = {
+  documento: number
   celular: string
 }

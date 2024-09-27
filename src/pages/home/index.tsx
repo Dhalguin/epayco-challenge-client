@@ -3,7 +3,7 @@ import RechargeWalletModal from '../../modals/rechargeModal'
 import PaymentModal from '../../modals/paymentModal'
 import ConfirmPaymentModal from '../../modals/confirmPaymentModal'
 import { api } from '../../api'
-import { Client } from '../../api/types'
+import { Client, PaymentPayload } from '../../api/types'
 
 function HomePage() {
   const [visibleModal, setVisibleModal] = useState({ recharge: false, payment: false, confirm: false })
@@ -47,15 +47,16 @@ function HomePage() {
     closeModal()
   }
 
-  const payment = () => {
-    const payload = {
-      documento: '',
-      celular: '',
+  const payment = async () => {
+    const payload: PaymentPayload = {
+      documento: 87654321,
+      celular: '87654321',
     }
 
-    // Call API
-    console.log({ payload })
-    openModal('confirm')
+    const response = await api.payment(payload)
+    if (response?.status === 200) {
+      openModal('confirm')
+    }
   }
 
   const confirmPayment = () => {
