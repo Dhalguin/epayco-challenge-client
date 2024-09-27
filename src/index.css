@@ -22,9 +22,9 @@ code {
 }
 
 .btn {
-  @apply text-gray-200  py-2 px-4 rounded-md min-w-[243px] shadow-xl font-semibold;
+  @apply text-gray-200 py-2 px-4 rounded-md min-w-[243px] shadow-xl font-semibold;
 }
 
 .btn-primary {
-  @apply bg-blue-400 w-fit;
+  @apply bg-blue-900 w-fit;
 }
