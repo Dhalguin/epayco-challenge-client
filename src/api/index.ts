@@ -1,11 +1,27 @@
 import axios from 'axios'
-import { ApiResponse, ConfirmPaymentPayload, PaymentPayload, RegisterClientPayload } from './types'
+import {
+  ApiResponse,
+  ConfirmPaymentPayload,
+  PaymentPayload,
+  RechargeWalletPayload,
+  RegisterClientPayload,
+} from './types'
 
 axios.defaults.baseURL = 'http://localhost:3601/'
 
 const checkBalance = async <T>(document: number, phoneNumber: string): Promise<ApiResponse<T> | null> => {
   try {
     const response = await axios.get(`/${document}?celular=${phoneNumber}`)
+    const data = { data: response.data.data, status: response.status }
+    return data
+  } catch (err) {
+    return null
+  }
+}
+
+const rechargeWallet = async <T>(payload: RechargeWalletPayload): Promise<ApiResponse<T> | null> => {
+  try {
+    const response = await axios.put(`/recharge`, payload)
     const data = { data: response.data.data, status: response.status }
     return data
   } catch (err) {
@@ -43,4 +59,4 @@ const confirmPayment = async <T>(payload: ConfirmPaymentPayload): Promise<ApiRes
   }
 }
 
-export const api = { checkBalance, confirmPayment, payment, registerClient }
+export const api = { checkBalance, confirmPayment, payment, rechargeWallet, registerClient }

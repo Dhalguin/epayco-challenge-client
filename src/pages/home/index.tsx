@@ -3,7 +3,7 @@ import RechargeWalletModal from '../../modals/rechargeModal'
 import PaymentModal from '../../modals/paymentModal'
 import ConfirmPaymentModal from '../../modals/confirmPaymentModal'
 import { api } from '../../api'
-import { Client, ConfirmPaymentPayload, PaymentPayload } from '../../api/types'
+import { Client, ConfirmPaymentPayload, PaymentPayload, RechargeWalletPayload } from '../../api/types'
 
 function HomePage() {
   const [visibleModal, setVisibleModal] = useState({ recharge: false, payment: false, confirm: false })
@@ -35,16 +35,18 @@ function HomePage() {
     setVisibleModal(prevState => ({ ...prevState, recharge: false, payment: false, confirm: false }))
   }
 
-  const rechargeWallet = () => {
-    const payload = {
-      documento: '',
-      celular: '',
+  const rechargeWallet = async () => {
+    const payload: RechargeWalletPayload = {
+      documento: 87654321,
+      celular: '87654321',
       valor: rechargeWalletAmount,
     }
 
-    // Call API
-    console.log({ payload })
-    closeModal()
+    const response = await api.rechargeWallet(payload)
+    if (response?.status === 200) {
+      balance()
+      closeModal()
+    }
   }
 
   const payment = async () => {
@@ -63,12 +65,13 @@ function HomePage() {
     const payload: ConfirmPaymentPayload = {
       clientId: '66f61f4498667be03b3cb922',
       token: token,
-      sessionId: 'cfcb059055b4a4d5',
+      sessionId: '47095088d322eeba',
       monto: paymentAmount,
     }
 
     const response = await api.confirmPayment(payload)
     if (response?.status === 200) {
+      balance()
       closeModal()
     }
   }

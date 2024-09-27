@@ -26,6 +26,12 @@ export type RegisterClientPayload = {
   celular: string
 }
 
+export type RechargeWalletPayload = {
+  documento: number
+  celular: string
+  valor: number
+}
+
 export type PaymentPayload = {
   documento: number
   celular: string
