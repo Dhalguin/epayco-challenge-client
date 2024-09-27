@@ -14,9 +14,17 @@ code {
 }
 
 .container {
-  @apply bg-white text-gray-900 rounded-md items-center justify-center mx-3 px-4 py-8 w-full shadow-xl lg:w-fit lg:min-w-[40%] lg:min-h-[60%];
+  @apply flex justify-center items-center h-screen w-screen;
+}
+
+.card {
+  @apply bg-white text-gray-900 rounded-md mx-3 px-4 py-8 w-full shadow-xl min-h-[60%] lg:w-fit lg:min-w-[40%];
+}
+
+.btn {
+  @apply text-gray-200  py-2 px-4 rounded-md min-w-[243px] shadow-xl font-semibold;
 }
 
 .btn-primary {
-  @apply bg-blue-400 text-gray-200 w-fit py-2 px-4 rounded-md min-w-[243px] shadow-xl font-semibold;
+  @apply bg-blue-400 w-fit;
 }

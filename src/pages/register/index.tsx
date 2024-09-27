@@ -9,8 +9,8 @@ function RegisterPage() {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen w-screen">
-      <div className="container">
+    <div className="container">
+      <div className="card">
         <h2 className="text-2xl font-bold text-center">Registro de cliente</h2>
         <div className="mt-5 w-full">
           <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
@@ -43,7 +43,7 @@ function RegisterPage() {
               placeholder="Ingrese su número de telefono"
             />
             <div className="flex justify-center mt-4">
-              <button className="btn-primary">Registrar</button>
+              <button className="btn btn-primary">Registrar</button>
             </div>
           </form>
         </div>
