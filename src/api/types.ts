@@ -30,3 +30,10 @@ export type PaymentPayload = {
   documento: number
   celular: string
 }
+
+export type ConfirmPaymentPayload = {
+  clientId: string
+  token: number
+  sessionId: string
+  monto: number
+}

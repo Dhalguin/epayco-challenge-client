@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ApiResponse, PaymentPayload, RegisterClientPayload } from './types'
+import { ApiResponse, ConfirmPaymentPayload, PaymentPayload, RegisterClientPayload } from './types'
 
 axios.defaults.baseURL = 'http://localhost:3601/'
 
@@ -33,4 +33,14 @@ const payment = async <T>(payload: PaymentPayload): Promise<ApiResponse<T> | nul
   }
 }
 
-export const api = { checkBalance, payment, registerClient }
+const confirmPayment = async <T>(payload: ConfirmPaymentPayload): Promise<ApiResponse<T> | null> => {
+  try {
+    const response = await axios.put(`/payment/confirm`, payload)
+    const data = { data: response.data.data, status: response.status }
+    return data
+  } catch (err) {
+    return null
+  }
+}
+
+export const api = { checkBalance, confirmPayment, payment, registerClient }

@@ -3,7 +3,7 @@ import RechargeWalletModal from '../../modals/rechargeModal'
 import PaymentModal from '../../modals/paymentModal'
 import ConfirmPaymentModal from '../../modals/confirmPaymentModal'
 import { api } from '../../api'
-import { Client, PaymentPayload } from '../../api/types'
+import { Client, ConfirmPaymentPayload, PaymentPayload } from '../../api/types'
 
 function HomePage() {
   const [visibleModal, setVisibleModal] = useState({ recharge: false, payment: false, confirm: false })
@@ -59,17 +59,18 @@ function HomePage() {
     }
   }
 
-  const confirmPayment = () => {
-    const payload = {
-      clientId: '',
+  const confirmPayment = async () => {
+    const payload: ConfirmPaymentPayload = {
+      clientId: '66f61f4498667be03b3cb922',
       token: token,
-      sessionId: '',
+      sessionId: 'cfcb059055b4a4d5',
       monto: paymentAmount,
     }
 
-    // Call API
-    console.log({ payload })
-    closeModal()
+    const response = await api.confirmPayment(payload)
+    if (response?.status === 200) {
+      closeModal()
+    }
   }
 
   const balance = async () => {
