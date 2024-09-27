@@ -1,5 +1,7 @@
 export type RechargeWalletModalProps = {
   visible: boolean
   title: string
-  onChange: () => void
+  onClose: () => void
+  setRechargeWalletAmount: React.Dispatch<React.SetStateAction<number>>
+  onRecharge: () => void
 }
