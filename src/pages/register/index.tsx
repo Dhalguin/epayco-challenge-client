@@ -3,9 +3,11 @@ import { ControlledInput } from '../../components'
 import { api } from '../../api'
 import { Client, RegisterClientPayload } from '../../api/types'
 import { useNavigate } from 'react-router-dom'
+import { useActiveClient } from '../../contexts/activeClient'
 
 function RegisterPage() {
   const navigate = useNavigate()
+  const { setActiveClient } = useActiveClient()
 
   const { control, handleSubmit } = useForm()
 
@@ -24,8 +26,7 @@ function RegisterPage() {
     const response = await api.registerClient<Client>(payload)
 
     if (response?.status === 201) {
-      console.log(response.data)
-
+      setActiveClient(response.data)
       navigate('/')
     }
   }

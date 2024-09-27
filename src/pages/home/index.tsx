@@ -3,14 +3,21 @@ import RechargeWalletModal from '../../modals/rechargeModal'
 import PaymentModal from '../../modals/paymentModal'
 import ConfirmPaymentModal from '../../modals/confirmPaymentModal'
 import { api } from '../../api'
-import { Client, ConfirmPaymentPayload, PaymentPayload, RechargeWalletPayload } from '../../api/types'
+import { Client, ConfirmPaymentPayload, PaymentPayload, RechargeWalletPayload, Token } from '../../api/types'
+import { useActiveClient } from '../../contexts/activeClient'
+import { useNavigate } from 'react-router-dom'
 
 function HomePage() {
   const [visibleModal, setVisibleModal] = useState({ recharge: false, payment: false, confirm: false })
   const [rechargeWalletAmount, setRechargeWalletAmount] = useState<number>(0)
   const [paymentAmount, setPaymentAmount] = useState<number>(0)
   const [token, setToken] = useState<number>(0)
+  const [sessionId, setSessonId] = useState<string>('')
   const [availableBalance, setAvailableBalance] = useState(0)
+
+  const { activeClient, setActiveClient } = useActiveClient()
+
+  const navigate = useNavigate()
 
   const openModal = (modal: 'recharge' | 'payment' | 'confirm') => {
     switch (modal) {
@@ -37,8 +44,8 @@ function HomePage() {
 
   const rechargeWallet = async () => {
     const payload: RechargeWalletPayload = {
-      documento: 87654321,
-      celular: '87654321',
+      documento: activeClient.documento,
+      celular: activeClient.celular,
       valor: rechargeWalletAmount,
     }
 
@@ -51,21 +58,22 @@ function HomePage() {
 
   const payment = async () => {
     const payload: PaymentPayload = {
-      documento: 87654321,
-      celular: '87654321',
+      documento: activeClient.documento,
+      celular: activeClient.celular,
     }
 
-    const response = await api.payment(payload)
+    const response = await api.payment<Token>(payload)
     if (response?.status === 200) {
+      setSessonId(response.data.sessionId)
       openModal('confirm')
     }
   }
 
   const confirmPayment = async () => {
     const payload: ConfirmPaymentPayload = {
-      clientId: '66f61f4498667be03b3cb922',
-      token: token,
-      sessionId: '47095088d322eeba',
+      clientId: activeClient._id,
+      token,
+      sessionId,
       monto: paymentAmount,
     }
 
@@ -77,15 +85,18 @@ function HomePage() {
   }
 
   const balance = async () => {
-    const response = await api.checkBalance<Client>(87654321, '87654321')
-    console.log({ response })
+    const response = await api.checkBalance<Client>(activeClient.documento, activeClient.celular)
     if (response?.status === 200) {
       setAvailableBalance(response.data.valor)
+      setActiveClient(response.data)
     }
   }
 
   useEffect(() => {
-    balance()
+    if (!activeClient?._id) navigate('/register')
+    else balance()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -94,7 +105,7 @@ function HomePage() {
         <div className="card">
           <div className="h-[378px]">
             <h2 className="text-sm">
-              Hi, <span className="text-lg font-semibold">Dhalgüin Hernandez</span>
+              Hi, <span className="text-lg font-semibold">{activeClient.nombres}</span>
             </h2>
             <div className="mt-2">
               <div className="bg-blue-900 text-white rounded-xl p-3 min-h-[125px]">
