@@ -11,3 +11,10 @@ export type Client = {
   celular: string
   valor: number
 }
+
+export type RegisterClientPayload = {
+  documento: string
+  nombres: string
+  email: string
+  celular: string
+}

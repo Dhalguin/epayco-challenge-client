@@ -1,11 +1,33 @@
 import { useForm } from 'react-hook-form'
 import { ControlledInput } from '../../components'
+import { api } from '../../api'
+import { Client, RegisterClientPayload } from '../../api/types'
+import { useNavigate } from 'react-router-dom'
 
 function RegisterPage() {
+  const navigate = useNavigate()
+
   const { control, handleSubmit } = useForm()
 
   const onSubmit = (data: any) => {
-    console.log({ data })
+    const payload: RegisterClientPayload = {
+      documento: data.documento,
+      nombres: data.nombres,
+      email: data.email,
+      celular: data.celular,
+    }
+
+    registerClient(payload)
+  }
+
+  const registerClient = async (payload: RegisterClientPayload) => {
+    const response = await api.registerClient<Client>(payload)
+
+    if (response?.status === 201) {
+      console.log(response.data)
+
+      navigate('/')
+    }
   }
 
   return (
