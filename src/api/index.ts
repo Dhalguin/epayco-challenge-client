@@ -7,7 +7,7 @@ import {
   RegisterClientPayload,
 } from './types'
 
-axios.defaults.baseURL = 'http://localhost:3601/'
+axios.defaults.baseURL = process.env.REACT_APP_ENDPOINT
 
 const checkBalance = async <T>(document: number, phoneNumber: string): Promise<ApiResponse<T> | null> => {
   try {
