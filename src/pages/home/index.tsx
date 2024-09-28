@@ -3,9 +3,10 @@ import RechargeWalletModal from '../../modals/rechargeModal'
 import PaymentModal from '../../modals/paymentModal'
 import ConfirmPaymentModal from '../../modals/confirmPaymentModal'
 import { api } from '../../api'
-import { Client, ConfirmPaymentPayload, PaymentPayload, RechargeWalletPayload, Token } from '../../api/types'
+import { Client, ConfirmPaymentPayload, PaymentPayload, RechargeWalletPayload, SessionId } from '../../api/types'
 import { useActiveClient } from '../../contexts/activeClient'
 import { useNavigate } from 'react-router-dom'
+import { UserIcon } from '../../icons'
 
 function HomePage() {
   const [visibleModal, setVisibleModal] = useState({ recharge: false, payment: false, confirm: false })
@@ -62,7 +63,7 @@ function HomePage() {
       celular: activeClient.celular,
     }
 
-    const response = await api.payment<Token>(payload)
+    const response = await api.payment<SessionId>(payload)
     if (response?.status === 200) {
       setSessonId(response.data.sessionId)
       openModal('confirm')
@@ -104,21 +105,26 @@ function HomePage() {
       <div className="container">
         <div className="card">
           <div className="h-[378px]">
-            <h2 className="text-sm">
-              Hi, <span className="text-lg font-semibold">{activeClient.nombres}</span>
-            </h2>
+            <div className="flex items-center gap-3">
+              <i className="bg-blue-500 p-3 rounded-full">
+                <UserIcon width="20" height="20" fill="#ffffff" />
+              </i>
+              <h2 className="text-base">
+                Bienvenido <span className="text-lg font-semibold">{activeClient.nombres}</span>
+              </h2>
+            </div>
             <div className="mt-2">
               <div className="bg-blue-900 text-white rounded-xl p-3 min-h-[125px]">
                 <span className="text-gray-200">Saldo disponible</span>
-                <h2 className="text-3xl font-semibold mt-2">$ {availableBalance}</h2>
+                <h2 className="text-3xl font-semibold mt-2">$ {availableBalance.toFixed(2)}</h2>
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-4 flex-1">
-            <button className="btn bg-yellow-600 w-full" onClick={() => openModal('payment')}>
+          <div className="flex flex-col gap-4 flex-1 items-center">
+            <button className="btn btn-primary w-2/3" onClick={() => openModal('payment')}>
               Pagar
             </button>
-            <button className="btn bg-blue-900 w-full" onClick={() => openModal('recharge')}>
+            <button className="btn btn-secondary w-2/3" onClick={() => openModal('recharge')}>
               Recargar billetera
             </button>
           </div>

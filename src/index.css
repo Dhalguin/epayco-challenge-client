@@ -26,5 +26,9 @@ code {
 }
 
 .btn-primary {
-  @apply bg-blue-900 w-fit;
+  @apply bg-blue-900;
+}
+
+.btn-secondary {
+  @apply bg-yellow-600;
 }
