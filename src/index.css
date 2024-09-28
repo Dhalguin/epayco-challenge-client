@@ -14,7 +14,7 @@ code {
 }
 
 .container {
-  @apply flex justify-center items-center h-screen w-screen;
+  @apply flex justify-center items-center h-screen w-screen min-w-[100vw];
 }
 
 .card {
