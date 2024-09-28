@@ -12,9 +12,8 @@ export type Client = {
   valor: number
 }
 
-export type Token = {
+export type SessionId = {
   sessionId: string
-  token: number
 }
 
 // Payloads
