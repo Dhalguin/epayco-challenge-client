@@ -4,12 +4,17 @@ import { api } from '../../api'
 import { Client, RegisterClientPayload } from '../../api/types'
 import { useNavigate } from 'react-router-dom'
 import { useActiveClient } from '../../contexts/activeClient'
+import toast from 'react-hot-toast'
 
 function RegisterPage() {
   const navigate = useNavigate()
   const { setActiveClient } = useActiveClient()
 
-  const { control, handleSubmit } = useForm()
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm()
 
   const onSubmit = (data: any) => {
     const payload: RegisterClientPayload = {
@@ -26,8 +31,11 @@ function RegisterPage() {
     const response = await api.registerClient<Client>(payload)
 
     if (response?.status === 201) {
+      toast.success('El registro ha sido exitoso')
       setActiveClient(response.data)
       navigate('/')
+    } else {
+      toast.error('Ha ocurrido un error! Intente de nuevo')
     }
   }
 
@@ -43,6 +51,9 @@ function RegisterPage() {
               type="text"
               label="N˚ documento"
               placeholder="Ingrese su documento"
+              error={errors?.documento}
+              msgError="Campo requerido"
+              required
             />
             <ControlledInput
               control={control}
@@ -50,6 +61,9 @@ function RegisterPage() {
               type="text"
               label="Nombre y Apellido"
               placeholder="Ingrese su numbre y apellido"
+              error={errors?.nombres}
+              msgError="Campo requerido"
+              required
             />
             <ControlledInput
               control={control}
@@ -57,6 +71,9 @@ function RegisterPage() {
               type="text"
               label="Email"
               placeholder="Ingrese su correo electrónico"
+              error={errors?.email}
+              msgError="Campo requerido"
+              required
             />
             <ControlledInput
               control={control}
@@ -64,6 +81,9 @@ function RegisterPage() {
               type="text"
               label="N˚ teléfono"
               placeholder="Ingrese su número de telefono"
+              error={errors?.celular}
+              msgError="Campo requerido"
+              required
             />
             <div className="flex justify-center mt-4">
               <button className="btn btn-primary">Registrar</button>

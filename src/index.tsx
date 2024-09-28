@@ -5,6 +5,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './index.css'
 import RegisterPage from './pages/register'
 import { ActiveClientProvider } from './contexts/activeClient'
+import { Toaster } from 'react-hot-toast'
+import { toastOptions } from './lib/toaster'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
@@ -17,5 +19,6 @@ root.render(
         </Routes>
       </BrowserRouter>
     </ActiveClientProvider>
+    <Toaster position="top-right" toastOptions={toastOptions} />
   </React.StrictMode>
 )

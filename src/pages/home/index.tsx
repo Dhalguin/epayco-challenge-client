@@ -7,6 +7,7 @@ import { Client, ConfirmPaymentPayload, PaymentPayload, RechargeWalletPayload, S
 import { useActiveClient } from '../../contexts/activeClient'
 import { useNavigate } from 'react-router-dom'
 import { UserIcon } from '../../icons'
+import toast from 'react-hot-toast'
 
 function HomePage() {
   const [visibleModal, setVisibleModal] = useState({ recharge: false, payment: false, confirm: false })
@@ -52,7 +53,11 @@ function HomePage() {
 
     const response = await api.rechargeWallet(payload)
     if (response?.status === 200) {
+      toast.success('Recargó su billetera correctamente')
       balance()
+      closeModal()
+    } else {
+      toast.error('Ha ocurrido un error! Intenete de nuevo')
       closeModal()
     }
   }
@@ -65,8 +70,11 @@ function HomePage() {
 
     const response = await api.payment<SessionId>(payload)
     if (response?.status === 200) {
+      toast.loading('Código enviado. Revise su correo electrónico')
       setSessonId(response.data.sessionId)
       openModal('confirm')
+    } else {
+      toast.error('Ha ocurrido un error! Intenete de nuevo')
     }
   }
 
@@ -80,7 +88,11 @@ function HomePage() {
 
     const response = await api.confirmPayment(payload)
     if (response?.status === 200) {
+      toast.success('Pago realizado correctamente')
       balance()
+      closeModal()
+    } else {
+      toast.error('Ha ocurrido un error! Intenete de nuevo')
       closeModal()
     }
   }
@@ -105,7 +117,7 @@ function HomePage() {
       <div className="container">
         <div className="card">
           <div className="h-[378px]">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 mb-5">
               <i className="bg-blue-500 p-3 rounded-full">
                 <UserIcon width="20" height="20" fill="#ffffff" />
               </i>
