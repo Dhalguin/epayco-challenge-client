@@ -9,8 +9,11 @@ const ConfirmPaymentModal: React.FC<ConfirmPaymentModalProps> = ({
   onConfirmPayment,
 }) => {
   return (
-    <Modal visible={visible} title={title} onClose={onClose}>
-      <p>Le hemos enviado un código de confirmación a su correo, por favor revise e ingréselo a continuación</p>
+    <Modal
+      visible={visible}
+      title={title}
+      description="Le hemos enviado un código de confirmación a su correo, por favor revise e ingréselo a continuación."
+      onClose={onClose}>
       <div className="flex flex-col items-center justify-center gap-4 flex-1">
         <input
           type="number"
@@ -18,7 +21,7 @@ const ConfirmPaymentModal: React.FC<ConfirmPaymentModalProps> = ({
           placeholder="XXXXXX"
           onChange={ev => setToken(Number(ev.target.value))}
         />
-        <button className="btn bg-yellow-600" onClick={() => onConfirmPayment()}>
+        <button className="btn btn-primary" onClick={() => onConfirmPayment()}>
           Confirmar
         </button>
       </div>

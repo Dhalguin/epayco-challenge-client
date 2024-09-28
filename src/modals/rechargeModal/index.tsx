@@ -9,9 +9,12 @@ const RechargeWalletModal: React.FC<RechargeWalletModalProps> = ({
   onRecharge,
 }) => {
   return (
-    <Modal visible={visible} title={title} onClose={onClose}>
-      <p>A continuación, ingrese el monto que desea recargar a su billeterera virtual</p>
-      <div className="flex flex-col items-center justify-center gap-4 flex-1">
+    <Modal
+      visible={visible}
+      title={title}
+      description="A continuación, ingrese el monto que desea recargar a su billeterera virtual"
+      onClose={onClose}>
+      <div className="flex flex-col justify-center items-center h-full gap-4 w-full">
         <input
           type="number"
           className="border-2 border-solid w-full px-2 py-2 rounded-md"

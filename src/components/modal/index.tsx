@@ -1,11 +1,12 @@
 type ModalComponentProps = {
   visible: boolean
   title: string
+  description: string
   onClose: () => void
   children: JSX.Element | JSX.Element[]
 }
 
-const Modal: React.FC<ModalComponentProps> = ({ visible, title, onClose, children }) => {
+const Modal: React.FC<ModalComponentProps> = ({ visible, title, description, onClose, children }) => {
   if (!visible) return null
 
   return (
@@ -14,12 +15,13 @@ const Modal: React.FC<ModalComponentProps> = ({ visible, title, onClose, childre
         className="flex flex-col bg-white rounded-md p-3"
         style={{ minHeight: '500px', minWidth: '500px', maxHeight: '90vh' }}>
         <div className="flex mb-2 justify-between">
-          <p className="text-semi-heading font-bold">{title}</p>
+          <p className="text-xl font-bold">{title}</p>
           <span className="text-primary-normal font-bold text-heading cursor-pointer" onClick={onClose}>
             X
           </span>
         </div>
-        <div className="px-4 pb-8 flex-1 justify-between" style={{ maxHeight: '85vh' }}>
+        <p className="mt-2">{description}</p>
+        <div className="px-4 pb-8 flex justify-center items-center" style={{ minHeight: '400px', maxHeight: '85vh' }}>
           {children}
         </div>
       </div>
