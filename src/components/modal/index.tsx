@@ -12,7 +12,7 @@ const Modal: React.FC<ModalComponentProps> = ({ visible, title, description, onC
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
       <div
-        className="flex flex-col bg-white rounded-md p-3"
+        className="flex flex-col bg-white rounded-md p-3 lg:max-w-[40%]"
         style={{ minHeight: '500px', minWidth: '500px', maxHeight: '90vh' }}>
         <div className="flex mb-2 justify-between">
           <p className="text-xl font-bold">{title}</p>

@@ -1,4 +1,5 @@
-import { Modal } from '../../components'
+import { Modal, SimpleInput } from '../../components'
+import { DollarIcon } from '../../icons'
 import { RechargeWalletModalProps } from '../types'
 
 const RechargeWalletModal: React.FC<RechargeWalletModalProps> = ({
@@ -15,10 +16,10 @@ const RechargeWalletModal: React.FC<RechargeWalletModalProps> = ({
       description="A continuación, ingrese el monto que desea recargar a su billeterera virtual"
       onClose={onClose}>
       <div className="flex flex-col justify-center items-center h-full gap-4 w-full">
-        <input
+        <SimpleInput
           type="number"
-          className="border-2 border-solid w-full px-2 py-2 rounded-md"
           placeholder="0.00"
+          leftAddon={<DollarIcon width="20" height="20" fill="#b8bbbe" />}
           onChange={ev => setRechargeWalletAmount(Number(ev.target.value))}
         />
         <button className="btn btn-primary" onClick={() => onRecharge()}>
